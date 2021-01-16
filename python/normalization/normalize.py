@@ -73,7 +73,7 @@ if __name__ == "__main__":
     parser.add_argument("--row", default=None, help="row input (for testing)")
 
     args = parser.parse_args()
-
+    print(args.manifest)
     assert args.manifest
     normalizer = Normalizer()
     normalizer.read_manifest(args.manifest)
@@ -81,16 +81,14 @@ if __name__ == "__main__":
     if args.section and args.row:
         section_id, row_id, valid = normalizer.normalize(
             args.section, args.row)
-        print(
-            f"""
-            Input:
-                [section] {args.section}\t[row] {args.row}
-            Output:
-                [section_id] {section_id}\t[row_id] {row_id}
-            Valid?:
-                {valid}
-        """
-        )
+        print("""
+        Input:
+            [section] {}\t[row] {}
+        Output:
+            [section_id] {}\t[row_id] {}
+        Valid?:
+            {}
+        """.format(args.section, args.row, section_id, row_id, valid))
 
     elif args.input:
         samples = read_input(args.input)

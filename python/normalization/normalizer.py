@@ -18,23 +18,34 @@ class Normalizer(object):
         Arguments:
             manifest {[str]} -- /path/to/manifest
         """
-
-        # Your code goes here
-
-        with open(manifest, 'rU') as f:
-            reader = csv.DictReader(f)
+        with open(manifest) as file:
+            reader = csv.DictReader(file)
             for line in reader:
-                if 'section_id' and 'row_id' in line:
-                    section_id = line['section_id']
-                    row_id = line['row_id']
-                    section_name = line['section_name']
-                    row_name = line['row_name']
-                    if section_name in self.data:
-                        self.data[section_name].update(
-                            {'section_id': section_id, row_name: row_id})
-                    else:
-                        self.data.update(
-                            {section_name: {'section_id': section_id, row_name: row_id}})
+                assert len(line) == 4
+                # print(line)
+
+                section_id = line['section_id'].strip().lstrip('0')
+                section_name = line['section_name'].strip()
+                row_id = line['row_id'].strip()
+                row_name = line['row_name'].strip().lstrip('0')
+
+                # print(section_id, section_name, row_id, row_name)
+
+                if section_name in self.data.keys():
+                    self.data[section_name.lower()].update({row_name: row_id})
+                else:
+                    self.data[section_name.lower()] = {
+                        'section_id': section_id, row_name: row_id}
+
+        count = 0
+        for x, y in zip(self.data.keys(), self.data.values()):
+            count += 1
+            print(x, y)
+        print(self.data)
+        print('count', count)
+        # a = self.data['Left Field Pavilion 311']
+        # print(a)
+        # Your code goes here
 
     def normalize(self, section, row):
         """normalize a single (section, row) input
@@ -49,76 +60,26 @@ class Normalizer(object):
             section {[type]} -- [description]
             row {[type]} -- [description]
         """
-        print(section, row)
-        # Your code goes here
+        row = row.strip().lstrip('0')
+        section = section.strip().lower()
 
-        section_id = None
-        keyv = None
-        row_id = None
+        section_id = -1
+        row_id = -1
         valid = False
 
-        # Compile regular expressions
-        reg_int = re.compile('\d+')
-        reg_string = re.compile('([a-zA-Z]+)')
-        reg_int_string = re.compile("([0-9]+)([a-zA-Z]+)")
+        section = ''.join(dig for dig in section if dig.isdigit())
+        # print(section)
 
-        # Lower the section text
-        section = section.lower()
-        split_section = section.split(" ")
+        try:
+            section_info = self.data[section]
+            section_id = section_info['section_id']
+        except:
+            return '', '', False
 
-        # Check if row only has one instance of integers
-        # Clean the integer if it contains a leading 0
-        int_search = reg_int.findall(row)
-        if int_search and len(int_search) > 1:
-            return section_id, row_id, valid
-        elif int_search:
-            row = str(int(int_search[0]))
+        try:
+            row_id = section_info[row]
+            return section_id, row_id, True
+        except:
+            return section_id, '', False
 
-        # for each value in the split section
-        # determine if it is only an integer
-        for i, val in enumerate(split_section):
-            if reg_int_string.match(val):
-                reg_search = reg_int_string.match(val)
-            elif reg_int.match(val):
-                reg_search = reg_int.match(val)
-            elif reg_string.match(val):
-                reg_search = reg_string.match(val)
-
-            if reg_search and len(split_section) == 1 and reg_search.groups():
-                # split_section = str(reg_search.groups())
-                split_section = [x for x in list(reg_search.groups())]
-                break
-            elif reg_search and len(split_section) == 1 and reg_search.group():
-                split_section = [str(reg_search.group())]
-                break
-            elif reg_search:
-                split_section[i] = str(reg_search.group())
-
-        for key in self.data.keys():
-            lower_key = key.lower()
-            split_key = lower_key.split(" ")
-
-            if len(split_section) == 1 and (split_section[0] == split_key[0]):
-                keyv = key
-                break
-
-            key_counter = 0
-            section_counter = 0
-            for part in split_key:
-                if part in split_section:
-                    key_counter += 1
-                    section_counter += 1
-                if (key_counter == len(split_key)) or (section_counter == len(split_section)):
-                    keyv = key
-                    break
-            if keyv is not None:
-                break
-
-        # if there is a found key value, set section_id, row_id, and valid to corresponding values
-        if keyv is not None:
-            if row in self.data[str(keyv)]:
-                section_id = int(self.data[str(keyv)]["section_id"])
-                row_id = int(self.data[str(keyv)][str(row)])
-                valid = True
-
-        return section_id, row_id, valid
+        # return section_id, row_id, True

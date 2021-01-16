@@ -58,7 +58,8 @@ def grade_match(match, verbose=False):
 
         else:
             if verbose:
-                print(f".. {i_s}:{i_r} WRONG! Marked valid, should be invalid")
+                print(
+                    f".. {i_s}:{i_r} WRONG! Marked valid, should be invalid")
             pts = -5
     return pts
 
@@ -91,12 +92,12 @@ def grade(path_to_manifest, path_to_input, path_to_executable, verbose=False, is
         escape(_executable), escape(_manifest), escape(_input))
 
     if is_windows:
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE)
+        p = subprocess.Popen(
+            cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     else:
         args = shlex.split(cmd)
-        p = subprocess.Popen(args, stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE)
+        p = subprocess.Popen(
+            args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     k = p.communicate()
     valid_lines = parse_output(k)
@@ -154,10 +155,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     is_windows = platform.system() == "Windows"
 
-    assert args.lang in ("python", "ruby", "c#", "java", "php")
+    assert args.lang in ("python3", "ruby", "c#", "java", "php")
     assert args.manifest and args.input
 
-    if args.lang == "python":
+    if args.lang == "python3":
         grade_python(args.manifest, args.input, args.verbose, is_windows)
 
     if args.lang == "ruby":
