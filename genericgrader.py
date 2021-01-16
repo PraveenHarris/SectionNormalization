@@ -108,7 +108,6 @@ def grade(path_to_manifest, path_to_input, path_to_executable, verbose=False, is
         pts = grade_match(match, verbose=verbose)
         max_pts += 1
         total_pts += pts
-
     print(f"{total_pts} / {max_pts}")
     return total_pts, max_pts
 

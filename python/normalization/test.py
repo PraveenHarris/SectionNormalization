@@ -2,22 +2,24 @@ import csv
 from normalizer import Normalizer
 
 normalizer = Normalizer()
-normalizer.read_manifest('../../manifests/citifield_sections.csv')
+# normalizer.read_manifest('../../manifests/citifield_sections.csv')
+normalizer.read_manifest('../../manifests/dodgerstadium_sections.csv')
 
 inp = []
 correct = []
 
-with open('metstest.csv') as file:
+with open('dodgertest.csv') as file:
+    # with open('metstest.csv') as file:
     reader = csv.reader(file)
     for line in reader:
-        inp.append({'section': line[0].strip().lstrip('0'),
-                    'row': line[1].strip().lstrip('0')})
+        inp.append({'section': line[0],
+                    'row': line[1]})
         if line[4].strip() == 'True':
             correct.append(
-                {'section_id': line[2].strip().lstrip('0'), 'row_id': line[3].strip().lstrip('0'), 'valid': True})
+                {'section_id': line[2], 'row_id': line[3], 'valid': True})
         else:
             correct.append(
-                {'section_id': line[2].strip().lstrip('0'), 'row_id': line[3].strip().lstrip('0'), 'valid': False})
+                {'section_id': line[2], 'row_id': line[3], 'valid': False})
 
 inp = inp[1:]
 correct = correct[1:]
@@ -29,6 +31,7 @@ c1 = correct[0]
 right = 0
 wrong = 0
 count = 0
+cc = 0
 
 for i, c in zip(inp, correct):
     count += 1
@@ -38,10 +41,12 @@ for i, c in zip(inp, correct):
     # if not valid:
     # print(count, section_id, row_id)
     if section_id != c['section_id'] or row_id != c['row_id'] or valid != c['valid']:
+        cc += 1
         wrong += 1
-        print(i, c)
-        print('count: ', count, 'section id: ', section_id,
-              'row id: ', row_id, 'valid: ', valid)
+        if cc == 1:
+            print(i, c)
+            print('count: ', count, 'section id: ', section_id,
+                  'row id: ', row_id, 'valid: ', valid)
     else:
         right += 1
     # except:

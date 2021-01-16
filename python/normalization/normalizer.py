@@ -24,12 +24,15 @@ class Normalizer(object):
                 assert len(line) == 4
                 # print(line)
 
-                section_id = line['section_id'].strip().lstrip('0')
-                section_name = line['section_name'].strip()
-                row_id = line['row_id'].strip()
-                row_name = line['row_name'].strip().lstrip('0')
+                section_id = line['section_id'].strip().lstrip('0').lower()
+                section_name = line['section_name'].strip().lower()
+                row_id = line['row_id'].strip().lower()
+                row_name = line['row_name'].strip().lstrip('0').lower()
 
                 # print(section_id, section_name, row_id, row_name)
+                section_name = ''.join(
+                    dig for dig in section_name if dig.isdigit())
+                # print(section)
 
                 if section_name in self.data.keys():
                     self.data[section_name.lower()].update({row_name: row_id})
@@ -37,12 +40,12 @@ class Normalizer(object):
                     self.data[section_name.lower()] = {
                         'section_id': section_id, row_name: row_id}
 
-        count = 0
-        for x, y in zip(self.data.keys(), self.data.values()):
-            count += 1
-            print(x, y)
-        print(self.data)
-        print('count', count)
+        # count = 0
+        # for x, y in zip(self.data.keys(), self.data.values()):
+        #     count += 1
+        #     print(x, y)
+        # print(self.data)
+        # print('count', count)
         # a = self.data['Left Field Pavilion 311']
         # print(a)
         # Your code goes here
@@ -60,7 +63,7 @@ class Normalizer(object):
             section {[type]} -- [description]
             row {[type]} -- [description]
         """
-        row = row.strip().lstrip('0')
+        row = row.strip().lstrip('0').lower()
         section = section.strip().lower()
 
         section_id = -1
@@ -78,6 +81,7 @@ class Normalizer(object):
 
         try:
             row_id = section_info[row]
+            print(section, section_info)
             return section_id, row_id, True
         except:
             return section_id, '', False
