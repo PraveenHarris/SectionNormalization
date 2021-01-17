@@ -1,4 +1,4 @@
-##Normalizaition Explanation
+###Normalizaition Explanation
 
 I attempted to solve this problem by building up my solution. Specifically, I tried to tackle the most simple normalization problems, and then tackle more complicated ones and eventually attempted to deal with all of the edge cases. This led me to start with solving the citifield and mets normalization problem.
 
