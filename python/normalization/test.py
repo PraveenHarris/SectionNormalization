@@ -8,8 +8,8 @@ normalizer.read_manifest('../../manifests/dodgerstadium_sections.csv')
 inp = []
 correct = []
 
-with open('dodgertest.csv') as file:
-    # with open('metstest.csv') as file:
+with open('../../samples/dodgertest.csv') as file:
+    # with open('../../samples/metstest.csv') as file:
     reader = csv.reader(file)
     for line in reader:
         inp.append({'section': line[0],
@@ -43,7 +43,7 @@ for i, c in zip(inp, correct):
     if section_id != c['section_id'] or row_id != c['row_id'] or valid != c['valid']:
         cc += 1
         wrong += 1
-        if cc == 1:
+        if cc == 3:
             print(i, c)
             print('count: ', count, 'section id: ', section_id,
                   'row id: ', row_id, 'valid: ', valid)
@@ -61,30 +61,3 @@ for i, c in zip(inp, correct):
     #     right += 1
 
 print(right, wrong)
-
-# print(correct, len(correct))
-# s = []
-# for sec in sections:
-#     sec = ''.join(dig for dig in sec if dig.isdigit())
-#     s.append(int(sec))
-
-# for x, y in zip(s, sections):
-#     print(x, y)
-
-# sections = []
-# with open('metstest.csv') as file:
-#     reader = csv.reader(file)
-#     for line in reader:
-#         x = line[0].lower()
-#         sections.append(x)
-#         # print(line)
-# sections = sections[1:]
-# # print(sections, len(sections))
-
-# s = []
-# for sec in sections:
-#     sec = ''.join(dig for dig in sec if dig.isdigit())
-#     s.append(int(sec))
-
-# for x, y in zip(s, sections):
-#     print(x, y)
