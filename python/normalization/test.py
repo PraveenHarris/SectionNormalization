@@ -2,14 +2,14 @@ import csv
 from normalizer import Normalizer
 
 normalizer = Normalizer()
-# normalizer.read_manifest('../../manifests/citifield_sections.csv')
-normalizer.read_manifest('../../manifests/dodgerstadium_sections.csv')
+normalizer.read_manifest('../../manifests/citifield_sections.csv')
+# normalizer.read_manifest('../../manifests/dodgerstadium_sections.csv')
 
 inp = []
 correct = []
 
-with open('../../samples/dodgertest.csv') as file:
-    # with open('../../samples/metstest.csv') as file:
+# with open('../../samples/dodgertest.csv') as file:
+with open('../../samples/metstest.csv') as file:
     reader = csv.reader(file)
     for line in reader:
         inp.append({'section': line[0],
