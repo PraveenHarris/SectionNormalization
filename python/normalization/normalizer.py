@@ -1,6 +1,6 @@
 import csv
 import re
-from difflib import SequenceMatcher
+from cdifflib import SequenceMatcher
 
 
 class Normalizer(object):

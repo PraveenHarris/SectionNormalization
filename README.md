@@ -23,4 +23,6 @@ If I had more time, I would probably like to use regular expressions, as it is p
 
 Above all, however, I believe the best way by far to solve this problem is to create a learning algorithm that can predict sections based off a much larger training dataset.
 
+Finally, I used the cdifflib package to help with the string similarity.
+
 
